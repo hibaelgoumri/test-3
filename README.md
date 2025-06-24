@@ -142,7 +142,7 @@ La bibliothèque `Servo.h` est une bibliothèque native d'Arduino qui permet de 
 ---
 
 ## 💻 Code Arduino (version multi-servos)  
-* Dans ce projet, le code Arduino est structuré pour contrôler 7 servomoteurs, chacun correspondant à un segment (de a à g) de l’afficheur 7 segments mécanique.
+Dans ce projet, le code Arduino est structuré pour contrôler 7 servomoteurs, chacun correspondant à un segment (de a à g) de l’afficheur 7 segments mécanique.
 Voici les points clés du code :
 - **Utilisation de la bibliothèque Servo.h**
 Cette bibliothèque facilite le contrôle des servomoteurs en générant automatiquement le signal PWM nécessaire sur les broches numériques du microcontrôleur.  
