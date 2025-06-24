@@ -8,6 +8,32 @@
 
 Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pilotés par un **ATmega328P** nu (sans carte Arduino), pour afficher les chiffres de **0 à 9**, puis **de 9 à 0**. Le tout doit être alimenté par une **batterie Li-ion**, et le code doit être **non bloquant** (sans `delay()`), avec un affichage toutes les secondes.
 
+ ## 🎯 Cahier des charges  
+### Objectifs fonctionnels :  
+- Créer un afficheur 7 segments mécanique utilisant **des servomoteurs SG90**
+- Contrôler les servomoteurs avec un **ATmega328P** nu (sans carte Arduino)
+- Générer un affichage fluide des chiffres de **0 à 9 puis 9 à 0**, **sans blocage**
+- Utiliser un signal PWM avec la bibliothèque `Servo.h`
+- Concevoir un circuit imprimé (PCB) optimisé et compact
+- Alimenter le système avec une batterie Li-ion **via un régulateur AMS1117**
+- 
+### Contraintes techniques :  
+- Le système doit être **autonome** (sans PC ni carte Arduino)
+- Les segments doivent être **entièrement visibles mécaniquement**
+- Aucun `delay()` ne doit être utilisé dans le code (gestion avec `millis()`)
+- Le PCB doit intégrer le régulateur, le quartz, les résistances et les condensateurs
+- L’ensemble doit être testé **en simulation et en maquette** avant production
+
+---
+
+## 🔌 Schéma synoptique
+
+> 👉 Schéma fonctionnel illustrant la connexion entre :
+- ATmega328P
+- Servos SG90
+- Régulateur AMS1117
+- Batterie Li-ion
+- Connexions PWM
 ---
 
 ## 🔧 Architecture Générale
