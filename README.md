@@ -68,38 +68,24 @@ Le servomoteur SG90 est commandé par un signal PWM (Pulse Width Modulation), qu
 * Une impulsion de **1.5 ms** positionne l'axe à **90°** (milieu)  
 * Une impulsion de **2 ms** positionne l'axe à **180°** (droite)  
 Ce signal est **répété toutes les 20 ms**, soit une fréquence de **50 Hz**. Le microcontrôleur doit maintenir cette fréquence et adapter la durée de l'impulsion pour indiquer la position voulue. Si la fréquence est trop basse ou si le signal n’est pas stable, le servomoteur risque de vibrer ou de perdre sa position.  
-
-### Exemple de code test (version non bloquante)
+### 🔄 Code pour initialisation du servomoteur SG90
 
 ```cpp
+// Test utilisation servomoteur SG90
 #include <Servo.h>
-Servo monServo;
-
-unsigned long previousMillis = 0;
-const long interval = 1000;
-bool etat = false;
+Servo monservo; // Crée l’objet pour contrôler le servomoteur
 
 void setup() {
-  monServo.attach(3);
-  monServo.write(0);  // Position initiale
+  monservo.attach(9);     // Utilise la broche 9 pour le contrôle
+  monservo.write(0);      // Positionne le servomoteur à 0° (repos)
 }
 
 void loop() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
-    etat = !etat;
-    if (etat) {
-      monServo.write(180);
-    } else {
-      monServo.write(0);
-    }
-  }
+  // Boucle vide pour ce test
 }
 
-```
-
-> ✅ Ce code utilise `millis()` pour gérer la temporisation, ce qui permet d'éviter toute fonction bloquante comme `delay()`.
+> Ce code représente la toute première étape de l’utilisation d’un servomoteur. Il permet de l’attacher à une broche numérique (ici D9) et de le positionner à un angle précis (ici 0°).  
+> Ce code utilise `millis()` pour gérer la temporisation, ce qui permet d'éviter toute fonction bloquante comme `delay()`.  
 
 ---
 
