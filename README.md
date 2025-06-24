@@ -1,42 +1,40 @@
-# Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs  
+# 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
+
+> **Test 3 – Teckbot Robotics Challenge**
+> Réalisé par : *Hiba El Goumri* – 2e année GEE, ENSA MarrakechS
+
 ---
 
 ## 🎯 Objectif du Projet
 
-Ce projet a pour but de réaliser un **afficheur 7 segments** innovant, non lumineux, en utilisant **7 servomoteurs (SG90)**, chacun correspondant à un segment. Le dispositif devra afficher les chiffres de **0 à 9** puis de **9 à 0**, avec une temporisation de **1 seconde** entre chaque chiffre.  
-Le tout est piloté par un **ATmega328P (nu)**, sans carte Arduino ni breadboard. L'alimentation est assurée par une **batterie Li-ion**. Le code doit être **non bloquant** (sans `delay()`).   
+Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pilotés par un **ATmega328P** nu (sans carte Arduino), pour afficher les chiffres de **0 à 9**, puis **de 9 à 0**. Le tout doit être alimenté par une **batterie Li-ion**, et le code doit être **non bloquant** (sans `delay()`), avec un affichage toutes les secondes.
 
 ---
 
-## 🔧 Architecture Matérielle  
-* **Microcontrôleur** : ATmega328P 
-* **Affichage** : 7 servomoteurs SG90 agissant sur des segments mécaniques
-* **Contrôle** : Signal PWM envoyé à chaque servo
-* **Alimentation** : Batterie Litiuon + réof1    11gulateur 5V (LM7805)
-* **Montage** : Veroboard ou PCB (sans Arduino ni breadboard)
+## 🔧 Architecture Générale
 
----
+### 🧩 Matériel Utilisé
 
-## 📦 Liste des Composants
-
-| Composant          | Référence                | Qté |
-| ------------------ | ------------------------ | --- |
-| Microcontrôleur    | ATmega328P               | 1   |
-| Servomoteur        | SG90                     | 7   |
-| Régulateur         | AMS1117 5V               | 1   |
-| Quartz             | 16 MHz                   | 1   |
-| Condensateurs      | 22pF + 100nF             | 4   |
-| Résistance Pull-up | 10kΩ (reset)             | 1   |
-| Batterie Li-ion    | 3.7V 18650               | 1   |
-| Divers             | Veroboard, fils, headers | -   |
+| Composant          | Référence    | Qté |
+| ------------------ | ------------ | --- |
+| Microcontrôleur    | ATmega328P   | 1   |
+| Servomoteur        | SG90         | 7   |
+| Régulateur         | AMS1117 5V   | 1   |
+| Quartz             | 16 MHz       | 1   |
+| Condensateurs      | 22pF + 100nF | 4   |
+| Résistance Pull-up | 10kΩ (reset) | 1   |
+| Batterie Li-ion    | 3.7V 18650   | 1   |
+| Veroboard ou PCB   | -            | 1   |
+| Fils & connecteurs | -            | -   |
 
 ---
 
 ## ⚙️ Fonctionnement Global
 
-Chaque servomoteur est lié à un segment (a à g). Selon le chiffre à afficher, une combinaison de segments est activée en déplaçant les servomoteurs en position "ON" ou "OFF" (ex : 90° ou 0°).
-
-Le programme envoie un signal PWM à chaque servo en utilisant la bibliothèque `Servo.h`. Le passage d'un chiffre à l'autre est géré par `millis()` pour éviter les délais bloquants.
+* Chaque segment (a à g) est déplacé mécaniquement par un **servomoteur** SG90.
+* Selon le chiffre à afficher, une **configuration des 7 servos** est activée.
+* Un **programme sur ATmega328P** pilote chaque servo avec un **signal PWM**.
+* Le changement de chiffre se fait **toutes les secondes**, sans `delay()`.
 
 ---
 
@@ -44,45 +42,118 @@ Le programme envoie un signal PWM à chaque servo en utilisant la bibliothèque 
 
 ### Qu'est-ce qu'un servomoteur ?
 
-Un servomoteur est un moteur équipé d'un réducteur et d'un capteur de position (potentiomètre), permettant un **contrôle précis de l'angle** de rotation via un signal PWM.  
-![image](https://github.com/user-attachments/assets/66657d90-26f2-433a-9201-5108920cd427)  
+Un servomoteur est un moteur équipé d’un réducteur et d’un potentiomètre qui permet un **contrôle précis de l’angle de rotation**, généralement entre **0° et 180°**.  
+![image](https://github.com/user-attachments/assets/0b8a4a6c-d0d1-4a34-965a-7431a619ccf9)
+
+
+### Caractéristiques techniques du SG90
+
+| Caractéristique        | Valeur            |
+| ---------------------- | ----------------- |
+| Dimensions             | 22 x 11.5 x 27 mm |
+| Poids                  | 9 g               |
+| Tension d’alimentation | 4.8 V à 6 V       |
+| Vitesse                | 0.12 s / 60°      |
+| Couple                 | 1.2 kg/cm         |
+| Angle de rotation      | 0° à 180°         |
+
+### Connexion
+
+| Fil    | Fonction     | Connexion MCU             |
+| ------ | ------------ | ------------------------- |
+| Marron | Masse (GND)  | GND                       |
+| Rouge  | Alimentation | +5 V régulée (AMS1117)    |
+| Orange | Signal PWM   | Broche numérique (ex: D3) |
 
 ### Signal PWM
 
-* 1 ms → 0°
-* 1.5 ms → 90°
-* 2 ms → 180°
-* Répété toutes les 20 ms
+Le servomoteur SG90 est commandé par un signal PWM (Pulse Width Modulation), qui est une suite d'impulsions répétées périodiquement. La largeur de l'impulsion (temps pendant lequel le signal est à l'état haut) détermine l'angle de positionnement du servomoteur. En général :
 
-### Application dans le projet
+* Une impulsion de **1 ms** positionne l'axe à **0°** (gauche)
+* Une impulsion de **1.5 ms** positionne l'axe à **90°** (milieu)
+* Une impulsion de **2 ms** positionne l'axe à **180°** (droite)
 
-* Chaque servo déplace un segment entre 0° (OFF) et 90° (ON)
-* Permet d'afficher n'importe quel chiffre entre 0 et 9
+Ce signal est **répété toutes les 20 ms**, soit une fréquence de **50 Hz**. Le microcontrôleur doit maintenir cette fréquence et adapter la durée de l'impulsion pour indiquer la position voulue. Si la fréquence est trop basse ou si le signal n’est pas stable, le servomoteur risque de vibrer ou de perdre sa position.
 
-### Alimentation
+### Exemple de code test (version non bloquante)
 
-* Ne pas alimenter les servos depuis l'ATmega328P !
-* Utiliser une source externe (batterie + AMS1117)
-* Masse (GND) partagée entre servo et MCU
+```cpp
+#include <Servo.h>
+Servo monServo;
+
+unsigned long previousMillis = 0;
+const long interval = 1000;
+bool etat = false;
+
+void setup() {
+  monServo.attach(3);
+  monServo.write(0);  // Position initiale
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    etat = !etat;
+    if (etat) {
+      monServo.write(180);
+    } else {
+      monServo.write(0);
+    }
+  }
+}
+
+```
+
+> ✅ Ce code utilise `millis()` pour gérer la temporisation, ce qui permet d'éviter toute fonction bloquante comme `delay()`.
 
 ---
 
-## 💻 Code Arduino (fichier `code/servo_display.ino`)
+## 📚 Bibliothèque nécessaire
 
-* Utilise `Servo.h` pour chaque segment
-* Tableau de configurations pour les chiffres 0 à 9
-* Affichage croissant puis décroissant
-* Utilisation de `millis()` pour gérer le délai de 1s
-* Bien commenté et indenté
+### Servo.h
+
+La bibliothèque `Servo.h` est une bibliothèque native d'Arduino qui permet de contrôler facilement les servomoteurs à l’aide d’un signal PWM. Elle prend en charge :
+
+* L’attachement d’un servomoteur à une broche numérique via `servo.attach(pin);`
+* L’envoi d’un angle de rotation avec `servo.write(angle);`
+* La gestion du signal PWM en arrière-plan sans que l’utilisateur ait à le générer manuellement
+
+🔧 Cette bibliothèque est **incluse par défaut** avec l’IDE Arduino. Aucun téléchargement supplémentaire n’est nécessaire.
+
+> ⚠️ Avec un ATmega328P nu, il faut s’assurer que le bootloader et les bons fuse bits sont configurés pour supporter le signal PWM sur les broches utilisées.
+
+---
+
+## 💻 Code Arduino (version multi-servos)
+
+* Utilise la bibliothèque `Servo.h`
+* 7 objets Servo (a à g)
+* Tableau `chiffres[10][7]` : chaque ligne est une configuration ON/OFF
+* Temporisation gérée avec `millis()`
+
+### Tableau logique des chiffres (Segments activés)
+
+| Chiffre | a | b | c | d | e | f | g |
+| ------- | - | - | - | - | - | - | - |
+| 0       | 1 | 1 | 1 | 1 | 1 | 1 | 0 |
+| 1       | 0 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 2       | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
+| 3       | 1 | 1 | 1 | 1 | 0 | 0 | 1 |
+| 4       | 0 | 1 | 1 | 0 | 0 | 1 | 1 |
+| 5       | 1 | 0 | 1 | 1 | 0 | 1 | 1 |
+| 6       | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
+| 7       | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 8       | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 9       | 1 | 1 | 1 | 1 | 0 | 1 | 1 |
+
+Chaque ligne correspond à un chiffre et chaque colonne (a–g) représente un segment :
+
+* **1** = segment activé (servo en position ON)
+* **0** = segment désactivé (servo en position OFF)
+
 
 ---
 
-## 📹 Vidéo de Démonstration
-
-* Compteur 0 → 9 puis 9 → 0
-* Chiffre toutes les secondes
-* Segments bougent clairement
-* Voir : `media/demo.mp4`
-
----
+## 🧪 Test et Démonstration
 
