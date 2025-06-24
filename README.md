@@ -83,7 +83,7 @@ void setup() {
 void loop() {
   // Boucle vide pour ce test
 }
-
+```
 > Ce code représente la toute première étape de l’utilisation d’un servomoteur. Il permet de l’attacher à une broche numérique (ici D9) et de le positionner à un angle précis (ici 0°).  
 > Ce code utilise `millis()` pour gérer la temporisation, ce qui permet d'éviter toute fonction bloquante comme `delay()`.  
 
