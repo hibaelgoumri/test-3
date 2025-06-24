@@ -1,24 +1,18 @@
-# Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
-
-> Teckbot Robotics Challenge – Test 3
-> Réalisé par : **Hiba El Goumri** – 2e année GEE, ENSA Marrakech
-
+# Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs  
 ---
 
 ## 🎯 Objectif du Projet
 
-Ce projet a pour but de réaliser un **afficheur 7 segments** innovant, non lumineux, en utilisant **7 servomoteurs (SG90)**, chacun correspondant à un segment. Le dispositif devra afficher les chiffres de **0 à 9** puis de **9 à 0**, avec une temporisation de **1 seconde** entre chaque chiffre.
-
-Le tout est piloté par un **ATmega328P (nu)**, sans carte Arduino ni breadboard. L'alimentation est assurée par une **batterie Li-ion**. Le code doit être **non bloquant** (sans `delay()`).
+Ce projet a pour but de réaliser un **afficheur 7 segments** innovant, non lumineux, en utilisant **7 servomoteurs (SG90)**, chacun correspondant à un segment. Le dispositif devra afficher les chiffres de **0 à 9** puis de **9 à 0**, avec une temporisation de **1 seconde** entre chaque chiffre.  
+Le tout est piloté par un **ATmega328P (nu)**, sans carte Arduino ni breadboard. L'alimentation est assurée par une **batterie Li-ion**. Le code doit être **non bloquant** (sans `delay()`).   
 
 ---
 
-## 🔧 Architecture Matérielle
-
-* **Microcontrôleur** : ATmega328P (programmé via ISP)
+## 🔧 Architecture Matérielle  
+* **Microcontrôleur** : ATmega328P 
 * **Affichage** : 7 servomoteurs SG90 agissant sur des segments mécaniques
 * **Contrôle** : Signal PWM envoyé à chaque servo
-* **Alimentation** : Batterie Li-ion + régulateur 5V (AMS1117)
+* **Alimentation** : Batterie Litiuon + réof1    11gulateur 5V (LM7805)
 * **Montage** : Veroboard ou PCB (sans Arduino ni breadboard)
 
 ---
@@ -50,7 +44,8 @@ Le programme envoie un signal PWM à chaque servo en utilisant la bibliothèque 
 
 ### Qu'est-ce qu'un servomoteur ?
 
-Un servomoteur est un moteur équipé d'un réducteur et d'un capteur de position (potentiomètre), permettant un **contrôle précis de l'angle** de rotation via un signal PWM.
+Un servomoteur est un moteur équipé d'un réducteur et d'un capteur de position (potentiomètre), permettant un **contrôle précis de l'angle** de rotation via un signal PWM.  
+![image](https://github.com/user-attachments/assets/66657d90-26f2-433a-9201-5108920cd427)  
 
 ### Signal PWM
 
@@ -82,31 +77,6 @@ Un servomoteur est un moteur équipé d'un réducteur et d'un capteur de positio
 
 ---
 
-## 📁 Organisation du Dépôt GitHub
-
-```
-/
-|-- README.md
-|-- code/
-|   |-- servo_display.ino
-|   |-- README.md (explication des broches)
-|-- docs/
-|   |-- servo_moteur.md
-|   |-- datasheets/
-|       |-- SG90.pdf
-|       |-- ATmega328P.pdf
-|-- kicad/
-|   |-- afficheur.pro
-|   |-- afficheur.sch
-|   |-- afficheur.pcbnew
-|   |-- 3D.png
-|-- media/
-    |-- demo.mp4
-    |-- wiring_diagram.png
-```
-
----
-
 ## 📹 Vidéo de Démonstration
 
 * Compteur 0 → 9 puis 9 → 0
@@ -116,31 +86,3 @@ Un servomoteur est un moteur équipé d'un réducteur et d'un capteur de positio
 
 ---
 
-## 📝 Difficultés rencontrées
-
-* Calibrage précis des servos
-* Stabilité de l'alimentation
-* Programmation du microcontrôleur nu
-* Câblage clair et stable sur veroboard
-
----
-
-## 🚀 Améliorations futures
-
-* Ajouter un 2e chiffre (affichage à 2 chiffres = 14 servos)
-* Créer une structure imprimée en 3D pour les segments
-* Communication UART pour afficher des chiffres transmis
-
----
-
-## 👩‍💻 Auteure
-
-**Hiba El Goumri**
-ENSA Marrakech, 2e année Génie Électronique Embarqué
-[GitHub](https://github.com/) | [LinkedIn](https://linkedin.com/in/)
-
----
-
-## 📜 Licence
-
-Projet libre sous licence MIT. Usage pédagogique recommandé.
