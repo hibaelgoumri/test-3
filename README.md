@@ -1,7 +1,6 @@
 # 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
 
 > **Test 3 – Teckbot Robotics Challenge**
-> Réalisé par : *Hiba El Goumri* – 2e année GEE, ENSA MarrakechS
 
 ---
 
@@ -19,22 +18,19 @@ Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pil
 | ------------------ | ------------ | --- |
 | Microcontrôleur    | ATmega328P   | 1   |
 | Servomoteur        | SG90         | 7   |
-| Régulateur         | AMS1117 5V   | 1   |
+| Régulateur         | LM7805  5V   | 1   |
 | Quartz             | 16 MHz       | 1   |
-| Condensateurs      | 22pF + 100nF | 4   |
+| Condensateurs      | 22pF         | 2   |
 | Résistance Pull-up | 10kΩ (reset) | 1   |
-| Batterie Li-ion    | 3.7V 18650   | 1   |
-| Veroboard ou PCB   | -            | 1   |
+| Batterie Li-ion    | 3.7V         | 1   |
+| Veroboard          | -            | 1   |
 | Fils & connecteurs | -            | -   |
 
 ---
 
 ## ⚙️ Fonctionnement Global
 
-* Chaque segment (a à g) est déplacé mécaniquement par un **servomoteur** SG90.
-* Selon le chiffre à afficher, une **configuration des 7 servos** est activée.
-* Un **programme sur ATmega328P** pilote chaque servo avec un **signal PWM**.
-* Le changement de chiffre se fait **toutes les secondes**, sans `delay()`.
+Le principe de fonctionnement repose sur l’utilisation de 7 servomoteurs SG90, chacun étant affecté à un segment de l’afficheur (de a à g). Ces segments ne sont pas lumineux, mais déplacés mécaniquement à l’aide des bras des servomoteurs, ce qui crée une représentation physique du chiffre souhaité. Pour chaque chiffre (de 0 à 9), une configuration particulière des segments doit être activée ou désactivée. Cela signifie que certains servomoteurs se positionnent dans une position visible (par exemple 90° pour un segment « allumé ») tandis que d’autres se rétractent (0° pour un segment « éteint »). L’ensemble est piloté par un microcontrôleur ATmega328P, qui génère un signal PWM adapté à chaque servo pour lui indiquer sa position. Le code est conçu pour éviter toute fonction bloquante comme delay() ; les changements de chiffres sont gérés toutes les secondes à l’aide de la fonction millis(), garantissant un comportement fluide et réactif du système.  
 
 ---
 
@@ -67,13 +63,11 @@ Un servomoteur est un moteur équipé d’un réducteur et d’un potentiomètre
 
 ### Signal PWM
 
-Le servomoteur SG90 est commandé par un signal PWM (Pulse Width Modulation), qui est une suite d'impulsions répétées périodiquement. La largeur de l'impulsion (temps pendant lequel le signal est à l'état haut) détermine l'angle de positionnement du servomoteur. En général :
-
-* Une impulsion de **1 ms** positionne l'axe à **0°** (gauche)
-* Une impulsion de **1.5 ms** positionne l'axe à **90°** (milieu)
-* Une impulsion de **2 ms** positionne l'axe à **180°** (droite)
-
-Ce signal est **répété toutes les 20 ms**, soit une fréquence de **50 Hz**. Le microcontrôleur doit maintenir cette fréquence et adapter la durée de l'impulsion pour indiquer la position voulue. Si la fréquence est trop basse ou si le signal n’est pas stable, le servomoteur risque de vibrer ou de perdre sa position.
+Le servomoteur SG90 est commandé par un signal PWM (Pulse Width Modulation), qui est une suite d'impulsions répétées périodiquement. La largeur de l'impulsion (temps pendant lequel le signal est à l'état haut) détermine l'angle de positionnement du servomoteur. En général :  
+* Une impulsion de **1 ms** positionne l'axe à **0°** (gauche)  
+* Une impulsion de **1.5 ms** positionne l'axe à **90°** (milieu)  
+* Une impulsion de **2 ms** positionne l'axe à **180°** (droite)  
+Ce signal est **répété toutes les 20 ms**, soit une fréquence de **50 Hz**. Le microcontrôleur doit maintenir cette fréquence et adapter la durée de l'impulsion pour indiquer la position voulue. Si la fréquence est trop basse ou si le signal n’est pas stable, le servomoteur risque de vibrer ou de perdre sa position.  
 
 ### Exemple de code test (version non bloquante)
 
