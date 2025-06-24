@@ -99,18 +99,30 @@ La bibliothèque `Servo.h` est une bibliothèque native d'Arduino qui permet de 
 * L’envoi d’un angle de rotation avec `servo.write(angle);`
 * La gestion du signal PWM en arrière-plan sans que l’utilisateur ait à le générer manuellement
 
-🔧 Cette bibliothèque est **incluse par défaut** avec l’IDE Arduino. Aucun téléchargement supplémentaire n’est nécessaire.
+🔧 Cette bibliothèque est **incluse par défaut** avec l’IDE Arduino. Aucun téléchargement supplémentaire n’est nécessaire.  
 
-> ⚠️ Avec un ATmega328P nu, il faut s’assurer que le bootloader et les bons fuse bits sont configurés pour supporter le signal PWM sur les broches utilisées.
 
 ---
 
-## 💻 Code Arduino (version multi-servos)
-
-* Utilise la bibliothèque `Servo.h`
-* 7 objets Servo (a à g)
-* Tableau `chiffres[10][7]` : chaque ligne est une configuration ON/OFF
-* Temporisation gérée avec `millis()`
+## 💻 Code Arduino (version multi-servos)  
+* Dans ce projet, le code Arduino est structuré pour contrôler 7 servomoteurs, chacun correspondant à un segment (de a à g) de l’afficheur 7 segments mécanique.
+Voici les points clés du code :
+Utilisation de la bibliothèque Servo.h
+Cette bibliothèque facilite le contrôle des servomoteurs en générant automatiquement le signal PWM nécessaire sur les broches numériques du microcontrôleur.  
+- Création de 7 objets Servo distincts  
+Chaque segment (a, b, c, d, e, f, g) est associé à un objet Servo différent. Cela permet de commander individuellement chaque servomoteur en lui envoyant un angle spécifique.  
+- Définition d’un tableau chiffres[10][7]  
+Ce tableau contient la configuration des segments pour chaque chiffre de 0 à 9.  
+Chaque ligne du tableau correspond à un chiffre.  
+Chaque colonne correspond à un segment (a à g).  
+La valeur 1 signifie que le segment doit être activé (servo en position « ON », par exemple 90°).  
+La valeur 0 signifie que le segment doit être désactivé (servo en position « OFF », par exemple 0°).  
+Cela permet d’activer ou désactiver facilement les segments nécessaires pour afficher un chiffre donné en parcourant simplement ce tableau.  
+- Gestion de la temporisation avec millis()  
+Pour que le programme reste réactif et évite les blocages, la fonction millis() est utilisée pour déclencher le changement de chiffre toutes les secondes.  
+millis() retourne le nombre de millisecondes écoulées depuis le démarrage du programme.  
+En stockant la dernière valeur de millis() lors d’un changement, on peut comparer à la valeur actuelle pour savoir quand une seconde s’est écoulée sans utiliser delay().  
+Cela permet au microcontrôleur de continuer à gérer les servomoteurs et autres tâches sans interruption ni blocage.  
 
 ### Tableau logique des chiffres (Segments activés)
 
