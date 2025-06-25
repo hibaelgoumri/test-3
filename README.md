@@ -134,6 +134,8 @@ Les Parallax Continuous Rotation (rotation continue) ont été calibrés pour to
 ### 🧠 **Fonctionnement détaillé du Servomoteur Parallax Continuous Rotation**
 #### Qu’est-ce qu’un servo à rotation continue ?
 Ce type de servo ne peut pas se positionner à un angle fixe. Il tourne dans un sens ou l’autre à une certaine vitesse selon le signal PWM reçu.  
+![image](https://github.com/user-attachments/assets/a3d58c60-1039-43cd-9092-1484068ae4a4)
+
 #### Caractéristiques techniques
 
 | Caractéristique        | Valeur             |
