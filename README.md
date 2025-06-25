@@ -165,6 +165,7 @@ Ce type de servo ne peut pas se positionner à un angle fixe. Il tourne dans un 
 | Arrêt           | 1500 µs              | Stop rotation              |
 
 ⚠️ Comme ces moteurs ne retournent pas à une position fixe, chaque moteur a été calibré manuellement pour assurer l’alignement visuel des segments.
+
 ---
 
 ## 📚 Bibliothèque nécessaire
