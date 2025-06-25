@@ -6,7 +6,7 @@
 
 ## 🎯 Objectif du Projet
 
-Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pilotés par un **ATmega328P** nu (sans carte Arduino), pour afficher les chiffres de **0 à 9**, puis **de 9 à 0**. Le tout doit être alimenté par une **batterie Li-ion**, et le code doit être **non bloquant** (sans `delay()`), avec un affichage toutes les secondes.
+Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs **, pilotés par un **ATmega328P** nu (sans carte Arduino), pour afficher les chiffres de **0 à 9**, puis **de 9 à 0**. Le tout doit être alimenté par une **batterie Li-ion**, et le code doit être **non bloquant** (sans `delay()`), avec un affichage toutes les secondes.
 
  ## 🗂️ Sommaire
  
@@ -14,14 +14,15 @@ Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pil
  [🔌 Schéma synoptique](#-schéma-synoptique)  
  [🔧 Architecture Générale](#-architecture-générale)  
  [⚙️ Fonctionnement Global](#-fonctionnement-global)  
- [🧠 Fonctionnement détaillé du Servomoteur SG90](#-fonctionnement-détaillé-du-servomoteur-sg90)   
+ [🧠 Fonctionnement détaillé du Servomoteur SG90](#-fonctionnement-détaillé-du-servomoteur-sg90)  
+ [🛠️ Utilisation de Deux Types de Servomoteurs](#️-utilisation-de-deux-types-de-servomoteurs-sg90--parallax)  
  [📚 Bibliothèque nécessaire](#-bibliothèque-nécessaire)  
  [💻 Code Arduino (version multi-servos)](#-code-arduino-version-multi-servos)  
  [🧪 Test et Démonstration](#-test-et-démonstration)
 
  ## 🎯 Cahier des charges  
 ### Objectifs fonctionnels :  
-- Créer un afficheur 7 segments mécanique utilisant **des servomoteurs SG90**
+- Créer un afficheur 7 segments mécanique utilisant **des servomoteurs **
 - Contrôler les servomoteurs avec un **ATmega328P** nu (sans carte Arduino)
 - Générer un affichage fluide des chiffres de **0 à 9 puis 9 à 0**, **sans blocage**
 - Utiliser un signal PWM avec la bibliothèque `Servo.h`
@@ -51,23 +52,23 @@ Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs SG90**, pil
 
 ### 🧩 Matériel Utilisé
 
-| Composant          | Référence    | Qté |
-| ------------------ | ------------ | --- |
-| Microcontrôleur    | ATmega328P   | 1   |
-| Servomoteur        | SG90         | 7   |
-| Régulateur         | LM7805  5V   | 1   |
-| Quartz             | 16 MHz       | 1   |
-| Condensateurs      | 22pF         | 2   |
-| Résistance Pull-up | 10kΩ (reset) | 1   |
-| Batterie Li-ion    | 3.7V         | 1   |
-| Veroboard          | -            | 1   |
-| Fils & connecteurs | -            | -   |
+| Composant          | Référence            | Qté |
+| ------------------ | -------------------- | --- |
+| Microcontrôleur    | ATmega328P           | 1   |
+| Servomoteur        | SG90/Parallax        | 7   |
+| Régulateur         | LM7805  5V           | 1   |
+| Quartz             | 16 MHz               | 1   |
+| Condensateurs      | 22pF                 | 2   |
+| Résistance Pull-up | 10kΩ (reset)         | 1   |
+| Batterie Li-ion    | 3.7V                 | 1   |
+| Veroboard          | -                    | 1   |
+| Fils & connecteurs | -                    | -   |
 
 ---
 
 ## ⚙️ Fonctionnement Global
 
-Le principe de fonctionnement repose sur l’utilisation de 7 servomoteurs SG90, chacun étant affecté à un segment de l’afficheur (de a à g). Ces segments ne sont pas lumineux, mais déplacés mécaniquement à l’aide des bras des servomoteurs, ce qui crée une représentation physique du chiffre souhaité. Pour chaque chiffre (de 0 à 9), une configuration particulière des segments doit être activée ou désactivée. Cela signifie que certains servomoteurs se positionnent dans une position visible (par exemple 90° pour un segment « allumé ») tandis que d’autres se rétractent (0° pour un segment « éteint »). L’ensemble est piloté par un microcontrôleur ATmega328P, qui génère un signal PWM adapté à chaque servo pour lui indiquer sa position. Le code est conçu pour éviter toute fonction bloquante comme delay() ; les changements de chiffres sont gérés toutes les secondes à l’aide de la fonction millis(), garantissant un comportement fluide et réactif du système.  
+Le principe de fonctionnement repose sur l’utilisation de 7 servomoteurs, chacun étant affecté à un segment de l’afficheur (de a à g). Ces segments ne sont pas lumineux, mais déplacés mécaniquement à l’aide des bras des servomoteurs, ce qui crée une représentation physique du chiffre souhaité. Pour chaque chiffre (de 0 à 9), une configuration particulière des segments doit être activée ou désactivée. Cela signifie que certains servomoteurs se positionnent dans une position visible (par exemple 90° pour un segment « allumé ») tandis que d’autres se rétractent (0° pour un segment « éteint »). L’ensemble est piloté par un microcontrôleur ATmega328P, qui génère un signal PWM adapté à chaque servo pour lui indiquer sa position. Le code est conçu pour éviter toute fonction bloquante comme delay() ; les changements de chiffres sont gérés toutes les secondes à l’aide de la fonction millis(), garantissant un comportement fluide et réactif du système.  
 
 ---
 
@@ -124,6 +125,44 @@ void loop() {
 > Ce code représente la toute première étape de l’utilisation d’un servomoteur. Il permet de l’attacher à une broche numérique (ici D9) et de le positionner à un angle précis (ici 0°).  
 > Ce code utilise `millis()` pour gérer la temporisation, ce qui permet d'éviter toute fonction bloquante comme `delay()`.  
 
+---
+## 🛠️ Utilisation de Deux Types de Servomoteurs (SG90 & Parallax)
+Pendant le développement, nous n’avons pas pu trouver 7 servomoteurs SG90 identiques. Pour contourner ce problème, nous avons utilisé une combinaison de servomoteurs SG90 et Parallax Continuous Rotation.
+### ➕ **Adaptation du fonctionnement** :
+Les SG90 ont été utilisés normalement pour représenter les segments ON/OFF via des angles précis.  
+Les Parallax Continuous Rotation (rotation continue) ont été calibrés pour tourner brièvement dans un sens ou l’autre (ON ou OFF), puis s’arrêter.  
+### 🧠 **Fonctionnement détaillé du Servomoteur Parallax Continuous Rotation**
+#### Qu’est-ce qu’un servo à rotation continue ?
+Ce type de servo ne peut pas se positionner à un angle fixe. Il tourne dans un sens ou l’autre à une certaine vitesse selon le signal PWM reçu.  
+#### Caractéristiques techniques
+
+| Caractéristique        | Valeur             |
+|------------------------|--------------------|
+| Type                   | Rotation continue  |
+| Tension                | 4.8 – 6 V          |
+| Signal neutre          | 1500 µs (arrêt)    |
+| Vitesse max            | ~60 tr/min         |
+| Contrôle               | Par largeur d’impulsion |
+| Angle de positionnement | Non applicable    |
+
+####  Signal de contrôle
+
+| PWM (µs)     | Effet                 |
+|--------------|-----------------------|
+| < 1500 µs    | Rotation sens horaire |
+| > 1500 µs    | Rotation sens antihoraire |
+| = 1500 µs    | Arrêt (neutre)        |
+
+
+#### 💡 Utilisation dans notre projet
+
+| État du segment | Signal PWM         | Détail                      |
+|-----------------|--------------------|-----------------------------|
+| ON              | 1300 µs pendant 200 ms | Tourne brièvement (sens 1) |
+| OFF             | 1700 µs pendant 200 ms | Tourne brièvement (sens 2) |
+| Arrêt           | 1500 µs              | Stop rotation              |
+
+⚠️ Comme ces moteurs ne retournent pas à une position fixe, chaque moteur a été calibré manuellement pour assurer l’alignement visuel des segments.
 ---
 
 ## 📚 Bibliothèque nécessaire
