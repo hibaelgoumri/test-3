@@ -301,3 +301,4 @@ void displayDigit(int d) {
 
 ## 🧪 Test et Démonstration
 
+https://github.com/user-attachments/assets/130669d9-22cf-476d-a163-3bf61610d7c9
