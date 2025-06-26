@@ -194,36 +194,43 @@ Cela permet au microcontrôleur de continuer à gérer les servomoteurs et autre
 
 ### Tableau logique des chiffres (Segments activés)
 
-| Chiffre | a | b | c | d | e | f | g |
-| ------- | - | - | - | - | - | - | - |
-| 0       | 1 | 1 | 1 | 1 | 1 | 1 | 0 |
-| 1       | 0 | 1 | 1 | 0 | 0 | 0 | 0 |
-| 2       | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
-| 3       | 1 | 1 | 1 | 1 | 0 | 0 | 1 |
-| 4       | 0 | 1 | 1 | 0 | 0 | 1 | 1 |
-| 5       | 1 | 0 | 1 | 1 | 0 | 1 | 1 |
-| 6       | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
-| 7       | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
-| 8       | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
-| 9       | 1 | 1 | 1 | 1 | 0 | 1 | 1 |
+| Chiffre | A | B | C | D | E | F | G |
+|--------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|   0     | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
+|   1     | ❌ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ✔️ |
+|   2     | ✔️ | ✔️ | ❌ | ❌ | ❌ | ✔️ | ✔️ |
+|   3     | ✔️ | ✔️ | ✔️ | ❌ | ✔️ | ✔️ | ✔️ |
+|   4     | ❌ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ✔️ |
+|   5     | ✔️ | ❌ | ✔️ | ❌ | ✔️ | ❌ | ✔️ |
+|   6     | ✔️ | ❌ | ✔️ | ❌ | ❌ | ❌ | ✔️ |
+|   7     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ |
+|   8     | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ✔️ |
+|   9     | ✔️ | ✔️ | ✔️ | ❌ | ✔️ | ❌ | ✔️ |
 
 Chaque ligne correspond à un chiffre et chaque colonne (a–g) représente un segment :
 
-* **1** = segment activé (servo en position ON)
-* **0** = segment désactivé (servo en position OFF)
+* **✔️** = segment activé (servo en position ON)
+* **❌** = segment désactivé (servo en position OFF)
 ### Le code 
 ```cpp
-#include <Servo.h>
+#include <Servo.h>  // Inclusion de la bibliothèque standard Servo
 
-#define ANGLE_ON  0
-#define ANGLE_OFF 90
+// Définition des angles pour contrôler les segments
+#define ANGLE_ON  0     // Angle correspondant à un segment "allumé"
+#define ANGLE_OFF 90    // Angle correspondant à un segment "éteint"
 
+// Déclaration du nombre total de segments (7 segments A à G)
 const int NUM_SEGMENTS = 7;
+
+// Tableau des broches reliées aux servomoteurs pour les segments A à G
 const int servoPins[NUM_SEGMENTS] = {2, 3, 4, 5, 6, 7, 8};
+
+// Tableau d’objets Servo, un pour chaque segment
 Servo servos[NUM_SEGMENTS];
 
+// Définition de l’état ON (0°) ou OFF (90°) pour chaque chiffre de 0 à 9
+// Chaque ligne correspond à un chiffre, chaque colonne à un segment : A B C D E F G
 const bool digits[10][7] = {
-  // A  B  C  D  E  F  G
   {0, 0, 0, 1, 1, 1, 1}, // 0
   {1, 0, 0, 0, 0, 0, 1}, // 1
   {0, 0, 1, 1, 1, 0, 0}, // 2
@@ -236,42 +243,59 @@ const bool digits[10][7] = {
   {0, 0, 0, 1, 0, 1, 0}  // 9
 };
 
-unsigned long previousMillis = 0;
-const unsigned long interval = 1000;
-int digit = 0;
-int direction = 1;
+// Variables pour gérer la temporisation sans bloquer le code
+unsigned long previousMillis = 0;         // Mémorise le temps du dernier changement
+const unsigned long interval = 1000;      // Intervalle entre les changements (1 seconde)
 
+// Variables pour suivre le chiffre actuel et la direction du comptage
+int digit = 0;        // Chiffre actuellement affiché
+int direction = 1;    // 1 = incrémenter, -1 = décrémenter
+
+// Fonction d'initialisation : attache chaque servo à sa broche
 void setup() {
   for (int i = 0; i < NUM_SEGMENTS; i++) {
-    servos[i].attach(servoPins[i]);
+    servos[i].attach(servoPins[i]);  // Initialise chaque servo
   }
-  displayDigit(digit);
+
+  displayDigit(digit);  // Affiche le premier chiffre (0)
 }
 
+// Boucle principale qui s’exécute en continu
 void loop() {
-  unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis();  // Temps écoulé depuis le démarrage
+
+  // Si une seconde s'est écoulée, on change de chiffre
   if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
+    previousMillis = currentMillis;  // Met à jour le temps du dernier changement
 
-    digit += direction;
+    digit += direction;  // Incrémente ou décrémente le chiffre
 
+    // Si on dépasse 9, on repart dans l'autre sens (compte à rebours)
     if (digit > 9) {
       digit = 9;
       direction = -1;
-    } else if (digit < 0) {
+    }
+
+    // Si on descend en dessous de 0, on repart vers le haut
+    else if (digit < 0) {
       digit = 0;
       direction = 1;
     }
 
+    // Affiche le chiffre actuel sur les servos
     displayDigit(digit);
   }
 }
 
+// Fonction qui positionne les servos en fonction du chiffre à afficher
 void displayDigit(int d) {
   for (int i = 0; i < NUM_SEGMENTS; i++) {
+    // Si la valeur est 0 → servo à ANGLE_ON (segment allumé)
+    // Si la valeur est 1 → servo à ANGLE_OFF (segment éteint)
     servos[i].write(digits[d][i] ? ANGLE_ON : ANGLE_OFF);
   }
 }
+
 ```
 ---
 
