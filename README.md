@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/98b6fc98-13e5-4ba5-ab2b-7872c209b878)# 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
+# 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
 
 > **Test 3 – Teckbot Robotics Challenge**
 
@@ -318,5 +318,5 @@ Dimension de la coupure sont : 66.5/48.5 mm
 ![image](https://github.com/user-attachments/assets/f97bfb1f-24de-4170-b13e-9195898db0dc)  
 ### Visualisation 3D du PCB   
 ![image](https://github.com/user-attachments/assets/4f33d491-1f5b-4613-8751-e815a7be874e)  
-### Video de simulation 
-
+### Video de simulation  
+https://github.com/user-attachments/assets/e0e40ae5-1763-425d-8a55-42d6e8e38461  
