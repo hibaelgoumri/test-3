@@ -1,4 +1,4 @@
-# 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
+![image](https://github.com/user-attachments/assets/98b6fc98-13e5-4ba5-ab2b-7872c209b878)# 📘 Documentation Complète du Projet : Afficheur 7 Segments à Servomoteurs
 
 > **Test 3 – Teckbot Robotics Challenge**
 
@@ -301,18 +301,22 @@ void displayDigit(int d) {
 
 ## 🧪 Test et Démonstration
 
-https://github.com/user-attachments/assets/130669d9-22cf-476d-a163-3bf61610d7c9
+https://github.com/user-attachments/assets/130669d9-22cf-476d-a163-3bf61610d7c9  
+
 ## realisation de PCB 
-### Schématique
- 
-footprints
- 
-Organisation du PCB :
- 
-Routage par freerouting :
- 
-Edge.cuts
+
+### Création du schéma électronique      
+![image](https://github.com/user-attachments/assets/0e23648c-f8ee-45c9-9850-5ba5f6db3ad8)   
+### Footprints    
+![image](https://github.com/user-attachments/assets/98b6fc98-13e5-4ba5-ab2b-7872c209b878)   
+### Organisation du PCB    
+![image](https://github.com/user-attachments/assets/a87adc71-6bbc-463b-8c03-43fbccf6e10f)  
+### Définition des contours du PCB (Edge Cuts)   
 Dimension de la coupure sont : 66.5/48.5 mm
- 
-Vu 3D :
+![image](https://github.com/user-attachments/assets/c9062dbf-42e9-4f3e-bfb0-2ad89b12f901)  
+### Routage  
+![image](https://github.com/user-attachments/assets/f97bfb1f-24de-4170-b13e-9195898db0dc)  
+### Visualisation 3D du PCB   
+![image](https://github.com/user-attachments/assets/4f33d491-1f5b-4613-8751-e815a7be874e)  
+### Video de simulation 
 
