@@ -302,3 +302,17 @@ void displayDigit(int d) {
 ## 🧪 Test et Démonstration
 
 https://github.com/user-attachments/assets/130669d9-22cf-476d-a163-3bf61610d7c9
+## realisation de PCB 
+### Schématique
+ 
+footprints
+ 
+Organisation du PCB :
+ 
+Routage par freerouting :
+ 
+Edge.cuts
+Dimension de la coupure sont : 66.5/48.5 mm
+ 
+Vu 3D :
+
