@@ -10,8 +10,7 @@ Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs **, piloté
 
  ## 🗂️ Sommaire
  
- [🎯 Cahier des charges](#-cahier-des-charges)  
- [🔌 Schéma synoptique](#-schéma-synoptique)  
+ [🎯 Cahier des charges](#-cahier-des-charges)    
  [🔧 Architecture Générale](#-architecture-générale)  
  [⚙️ Fonctionnement Global](#-fonctionnement-global)  
  [🧠 Fonctionnement détaillé du Servomoteur SG90](#-fonctionnement-détaillé-du-servomoteur-sg90)  
@@ -36,16 +35,6 @@ Créer un afficheur 7 segments mécanique utilisant **7 servomoteurs **, piloté
 - Le PCB doit intégrer le régulateur, le quartz, les résistances et les condensateurs
 - L’ensemble doit être testé **en simulation et en maquette** avant production
 
----
-
-## 🔌 Schéma synoptique
-
-> 👉 Schéma fonctionnel illustrant la connexion entre :
-- ATmega328P
-- Servos SG90
-- Régulateur AMS1117
-- Batterie Li-ion
-- Connexions PWM
 ---
 
 ## 🔧 Architecture Générale
@@ -222,8 +211,68 @@ Chaque ligne correspond à un chiffre et chaque colonne (a–g) représente un s
 
 * **1** = segment activé (servo en position ON)
 * **0** = segment désactivé (servo en position OFF)
+### Le code 
+```cpp
+#include <Servo.h>
 
+#define ANGLE_ON  0
+#define ANGLE_OFF 90
 
+const int NUM_SEGMENTS = 7;
+const int servoPins[NUM_SEGMENTS] = {2, 3, 4, 5, 6, 7, 8};
+Servo servos[NUM_SEGMENTS];
+
+const bool digits[10][7] = {
+  // A  B  C  D  E  F  G
+  {0, 0, 0, 1, 1, 1, 1}, // 0
+  {1, 0, 0, 0, 0, 0, 1}, // 1
+  {0, 0, 1, 1, 1, 0, 0}, // 2
+  {0, 0, 0, 1, 0, 0, 0}, // 3
+  {1, 0, 0, 0, 0, 1, 0}, // 4
+  {0, 1, 0, 1, 0, 1, 0}, // 5
+  {0, 1, 0, 1, 1, 1, 0}, // 6
+  {0, 0, 0, 0, 0, 0, 1}, // 7
+  {0, 0, 0, 1, 1, 1, 0}, // 8
+  {0, 0, 0, 1, 0, 1, 0}  // 9
+};
+
+unsigned long previousMillis = 0;
+const unsigned long interval = 1000;
+int digit = 0;
+int direction = 1;
+
+void setup() {
+  for (int i = 0; i < NUM_SEGMENTS; i++) {
+    servos[i].attach(servoPins[i]);
+  }
+  displayDigit(digit);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+
+    digit += direction;
+
+    if (digit > 9) {
+      digit = 9;
+      direction = -1;
+    } else if (digit < 0) {
+      digit = 0;
+      direction = 1;
+    }
+
+    displayDigit(digit);
+  }
+}
+
+void displayDigit(int d) {
+  for (int i = 0; i < NUM_SEGMENTS; i++) {
+    servos[i].write(digits[d][i] ? ANGLE_ON : ANGLE_OFF);
+  }
+}
+```
 ---
 
 ## 🧪 Test et Démonstration
